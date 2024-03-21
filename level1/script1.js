@@ -7,7 +7,6 @@ const folderNames = ['auto', 'opel'];
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
 
-// Preload images function
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
         return new Promise((resolve, reject) => {
@@ -24,17 +23,17 @@ function loadImagesFromFolder(folder) {
     for (let i = 1; i <= 9; i++) {
         imagePaths.push(`${folder}/${String(i).padStart(2, '0')}.png`);
     }
-    return preloadImages(imagePaths); // Use preloadImages to preload images
+    return preloadImages(imagePaths); 
 }
 
 function initAndShufflePuzzle(images) {
-    shuffle(images); // Shuffle the preloaded images
+    shuffle(images);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = images.pop(); // Use preloaded images for puzzle
+                puzzle[i][j] = images.pop(); 
             } else {
                 puzzle[i][j] = null;
             }
@@ -81,7 +80,7 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Puzzle solved!");
+    alert("Peli voitettu");
 }
 
 function handleClick(event) {
@@ -101,7 +100,7 @@ function handleClick(event) {
         drawPuzzle();
 
         if (isPuzzleSolved()) {
-            alert("Congratulations! You've solved the puzzle!");
+            alert("Onnittelut voitit pelin!");
         }
     }
 }
@@ -128,6 +127,6 @@ const randomFolder = folderNames[Math.floor(Math.random() * folderNames.length)]
 
 loadImagesFromFolder(randomFolder)
     .then(images => {
-        initAndShufflePuzzle(images); // Pass preloaded images to initialize puzzle
+        initAndShufflePuzzle(images); 
         drawPuzzle();
     });
