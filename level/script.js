@@ -31,16 +31,46 @@ function loadImagesFromFolder(folder) {
     return preloadImages(imagePaths);
 }
 
+function countInversions(arr) {
+    let inversions = 0;
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] && arr[j] && parseInt(arr[i].src.slice(-6, -4)) > parseInt(arr[j].src.slice(-6, -4))) {
+                inversions++;
+            }
+        }
+    }
+    return inversions;
+}
+
+function isPuzzleSolvable() {
+    let flattenedPuzzle = puzzle.flat().map(img => img ? parseInt(img.src.slice(-6, -4)) : null);
+    let inversions = countInversions(flattenedPuzzle);
+    if ((emptyPos.y % 2 === 0 && inversions % 2 === 0) || (emptyPos.y % 2 !== 0 && inversions % 2 !== 0)) {
+        return true;
+    }
+    return false;
+}
+
 function initAndShufflePuzzle(images) {
-    shuffle(images);
+    if (!isPuzzleSolvable()) {
+        console.log("Unsolvable puzzle layout. Reshuffling...");
+        initAndShufflePuzzle(images); 
+        return;
+    }
+
+    const nonEmptyImages = images.slice(0, -1);
+    shuffle(nonEmptyImages);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = images.pop();
+                puzzle[i][j] = nonEmptyImages.pop();
             } else {
                 puzzle[i][j] = null;
+                emptyPos.x = j;
+                emptyPos.y = i;
             }
         }
     }
@@ -120,13 +150,17 @@ function isPuzzleSolved() {
     let count = 1;
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            if (puzzle[i][j] !== null && !puzzle[i][j].endsWith(`${String(count).padStart(2, '0')}.png`)) {
+            if (count === gridSize * gridSize) {
+                return true;
+            }
+            if (puzzle[i][j] !== null && puzzle[i][j].src.endsWith(`${String(count).padStart(2, '0')}.png`)) {
+                count++;
+            } else {
                 return false;
             }
-            count++;
         }
     }
-    return true;
+    return false; 
 }
 
 function startTimer() {
@@ -145,7 +179,7 @@ function stopTimer() {
 function resetTimer() {
     stopTimer();
     secondsElapsed = 0;
-    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
+document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
 }
 
 canvas.addEventListener('click', handleClick);
@@ -159,4 +193,4 @@ loadImagesFromFolder(randomFolder)
     .then(imagePaths => {
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
-    });
+});
