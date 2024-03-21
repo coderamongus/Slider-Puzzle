@@ -1,9 +1,9 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 4; 
+const gridSize = 3; 
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
-const folderNames = ['fountain', 'katedraali'];
+const folderNames = ['numerot'];
 
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
@@ -111,7 +111,7 @@ function handleClick(event) {
 
         if (isPuzzleSolved()) {
             stopTimer();
-            alert("Onnittelut, voitit pelin!");
+            alert("Onnittelut, voitit tason!");
         }
     }
 }
