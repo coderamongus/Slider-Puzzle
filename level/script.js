@@ -3,10 +3,13 @@ const ctx = canvas.getContext('2d');
 const gridSize = 3; 
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
-const folderNames = ['auto', 'opel'];
+const folderNames = ['numerot'];
+
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
-
+let moves = 0;
+let timerInterval;
+let secondsElapsed = 0;
 
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
@@ -21,20 +24,21 @@ function preloadImages(imagePaths) {
 
 function loadImagesFromFolder(folder) {
     const imagePaths = [];
-    for (let i = 1; i <= 9; i++) {
+
+    for (let i = 1; i <= gridSize * gridSize; i++) {
         imagePaths.push(`${folder}/${String(i).padStart(2, '0')}.png`);
     }
-    return preloadImages(imagePaths); 
+    return preloadImages(imagePaths);
 }
 
 function initAndShufflePuzzle(images) {
-    shuffle(images); 
+    shuffle(images);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = images.pop(); 
+                puzzle[i][j] = images.pop();
             } else {
                 puzzle[i][j] = null;
             }
@@ -85,6 +89,11 @@ function solvePuzzle() {
 }
 
 function handleClick(event) {
+    if (moves === 0) {
+        startTimer();
+    }
+    moves++;
+
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
@@ -101,6 +110,7 @@ function handleClick(event) {
         drawPuzzle();
 
         if (isPuzzleSolved()) {
+            stopTimer();
             alert("Onnittelut, voitit tason!");
         }
     }
@@ -110,13 +120,32 @@ function isPuzzleSolved() {
     let count = 1;
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            if (puzzle[i][j] !== null && puzzle[i][j] !== `${folderNames[0]}/09.png`) {
+            if (puzzle[i][j] !== null && !puzzle[i][j].endsWith(`${String(count).padStart(2, '0')}.png`)) {
                 return false;
             }
             count++;
         }
     }
     return true;
+}
+
+function startTimer() {
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    secondsElapsed++;
+    document.getElementById('timerDisplay').textContent = `Aika: ${secondsElapsed} sekuntia`;
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function resetTimer() {
+    stopTimer();
+    secondsElapsed = 0;
+    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
 }
 
 canvas.addEventListener('click', handleClick);
@@ -127,7 +156,7 @@ solveButton.addEventListener('click', solvePuzzle);
 const randomFolder = folderNames[Math.floor(Math.random() * folderNames.length)];
 
 loadImagesFromFolder(randomFolder)
-    .then(images => {
-        initAndShufflePuzzle(images); 
+    .then(imagePaths => {
+        initAndShufflePuzzle(imagePaths);
         drawPuzzle();
     });

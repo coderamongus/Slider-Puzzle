@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 4; // Updated grid size to 4x4
+const gridSize = 4; 
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['kuvat'];
@@ -85,7 +85,7 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Puzzle solved!");
+    alert("Taso läpi!");
 }
 
 function handleClick(event) {
@@ -111,7 +111,7 @@ function handleClick(event) {
 
         if (isPuzzleSolved()) {
             stopTimer();
-            alert("Congratulations! You've solved the puzzle!");
+            alert("Onnittelut, voitit pelin!");
         }
     }
 }
@@ -135,7 +135,7 @@ function startTimer() {
 
 function updateTimer() {
     secondsElapsed++;
-    document.getElementById('timerDisplay').textContent = `Time: ${secondsElapsed} seconds`;
+    document.getElementById('timerDisplay').textContent = `Aika: ${secondsElapsed} sekuntia`;
 }
 
 function stopTimer() {
@@ -145,7 +145,7 @@ function stopTimer() {
 function resetTimer() {
     stopTimer();
     secondsElapsed = 0;
-    document.getElementById('timerDisplay').textContent = `Time: 0 seconds`;
+    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
 }
 
 canvas.addEventListener('click', handleClick);
