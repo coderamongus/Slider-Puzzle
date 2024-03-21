@@ -7,7 +7,6 @@ const folderNames = ['auto', 'opel'];
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
 
-
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
         return new Promise((resolve, reject) => {
@@ -28,7 +27,7 @@ function loadImagesFromFolder(folder) {
 }
 
 function initAndShufflePuzzle(images) {
-    shuffle(images); 
+    shuffle(images);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
@@ -81,7 +80,7 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Taso läpi!");
+    alert("Peli voitettu");
 }
 
 function handleClick(event) {
@@ -101,7 +100,7 @@ function handleClick(event) {
         drawPuzzle();
 
         if (isPuzzleSolved()) {
-            alert("Onnittelut, voitit tason!");
+            alert("Onnittelut voitit pelin!");
         }
     }
 }
