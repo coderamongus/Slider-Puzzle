@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 4; // Päivitetty ruudukon koko 4x4
+const gridSize = 4; // Updated grid size to 4x4
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['kuvat'];
@@ -11,25 +11,36 @@ let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
 
+function preloadImages(imagePaths) {
+    return Promise.all(imagePaths.map((path) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = path;
+        });
+    }));
+}
+
 function loadImagesFromFolder(folder) {
     const imagePaths = [];
 
     for (let i = 1; i <= gridSize * gridSize; i++) {
         imagePaths.push(`${folder}/${String(i).padStart(2, '0')}.png`);
     }
-    return Promise.resolve(imagePaths);
+    return preloadImages(imagePaths);
 }
 
-function initAndShufflePuzzle(imagePaths) {
-    shuffle(imagePaths);
+function initAndShufflePuzzle(images) {
+    shuffle(images);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = imagePaths.pop();
+                puzzle[i][j] = images.pop();
             } else {
-                puzzle[i][j] = null; 
+                puzzle[i][j] = null;
             }
         }
     }
@@ -64,13 +75,9 @@ function drawPuzzle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            const img = new Image();
-            img.onload = function() {
+            const img = puzzle[i][j];
+            if (img !== null) {
                 ctx.drawImage(img, j * tileSize, i * tileSize, tileSize, tileSize);
-            };
-            const imagePath = puzzle[i][j];
-            if (imagePath !== null) {
-                img.src = imagePath;
             }
         }
     }
@@ -104,7 +111,7 @@ function handleClick(event) {
 
         if (isPuzzleSolved()) {
             stopTimer();
-            alert("Onnittelut, voitit pelin!");
+            alert("Congratulations! You've solved the puzzle!");
         }
     }
 }
@@ -128,7 +135,7 @@ function startTimer() {
 
 function updateTimer() {
     secondsElapsed++;
-    document.getElementById('timerDisplay').textContent = `Aika: ${secondsElapsed} sekuntia`;
+    document.getElementById('timerDisplay').textContent = `Time: ${secondsElapsed} seconds`;
 }
 
 function stopTimer() {
@@ -138,7 +145,7 @@ function stopTimer() {
 function resetTimer() {
     stopTimer();
     secondsElapsed = 0;
-    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
+    document.getElementById('timerDisplay').textContent = `Time: 0 seconds`;
 }
 
 canvas.addEventListener('click', handleClick);
