@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 const gridSize = 4; 
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
-const folderNames = ['kuvat'];
+const folderNames = ['fountain', 'katedraali'];
 
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
