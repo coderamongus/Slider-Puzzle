@@ -32,15 +32,18 @@ function loadImagesFromFolder(folder) {
 }
 
 function initAndShufflePuzzle(images) {
-    shuffle(images);
+    const nonEmptyImages = images.slice(0, -1);
+    shuffle(nonEmptyImages);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = images.pop();
+                puzzle[i][j] = nonEmptyImages.pop();
             } else {
                 puzzle[i][j] = null;
+                emptyPos.x = j;
+                emptyPos.y = i;
             }
         }
     }
@@ -78,6 +81,17 @@ function drawPuzzle() {
             const img = puzzle[i][j];
             if (img !== null) {
                 ctx.drawImage(img, j * tileSize, i * tileSize, tileSize, tileSize);
+                const numberX = j * tileSize + tileSize / 2;
+                const numberY = i * tileSize + tileSize / 2;
+                const number = parseInt(img.src.slice(-6, -4));
+                const highlightSize = 22; 
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)'; 
+                ctx.fillRect(numberX - highlightSize / 2, numberY - highlightSize / 2, highlightSize, highlightSize);
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(number.toString(), numberX, numberY);
             }
         }
     }
@@ -159,4 +173,4 @@ loadImagesFromFolder(randomFolder)
     .then(imagePaths => {
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
-    });
+});
