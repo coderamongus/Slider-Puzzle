@@ -11,6 +11,10 @@ let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
 
+
+let moveCounter = document.getElementById('moveCounter');
+moveCounter.textContent = `Siirrot: ${moves}`;
+
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
         return new Promise((resolve, reject) => {
@@ -54,7 +58,7 @@ function isPuzzleSolvable() {
 
 function initAndShufflePuzzle(images) {
     if (!isPuzzleSolvable()) {
-        console.log("Unsolvable puzzle layout. Reshuffling...");
+        console.log("Sekoitus uudelleen..");
         initAndShufflePuzzle(images); 
         return;
     }
@@ -124,6 +128,8 @@ function handleClick(event) {
     }
     moves++;
 
+    moveCounter.textContent = `Siirrot: ${moves}`;
+
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
@@ -179,7 +185,7 @@ function stopTimer() {
 function resetTimer() {
     stopTimer();
     secondsElapsed = 0;
-document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
+    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
 }
 
 canvas.addEventListener('click', handleClick);
