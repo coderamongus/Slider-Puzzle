@@ -98,13 +98,6 @@ function nextLevel() {
 }
 
 function handleClick(event) {
-    if (moves === 0) {
-        startTimer();
-    }
-    moves++;
-
-    moveCounter.textContent = `Siirrot: ${moves}`;
-
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
@@ -113,6 +106,14 @@ function handleClick(event) {
 
     if ((Math.abs(clickedTileX - emptyPos.x) === 1 && clickedTileY === emptyPos.y) ||
         (Math.abs(clickedTileY - emptyPos.y) === 1 && clickedTileX === emptyPos.x)) {
+
+        if (moves === 0) {
+            startTimer();
+        }
+        moves++;
+
+        moveCounter.textContent = `Siirrot: ${moves}`;
+
         puzzle[emptyPos.y][emptyPos.x] = puzzle[clickedTileY][clickedTileX];
         puzzle[clickedTileY][clickedTileX] = null;
         emptyPos.x = clickedTileX;
@@ -125,6 +126,7 @@ function handleClick(event) {
             solvePuzzle();
         }
     }
+
 }
 
 function isPuzzleSolved() {
