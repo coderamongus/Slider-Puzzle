@@ -14,35 +14,8 @@ let levelCompleteMenuShown = false;
 let moveCounter = document.getElementById('moveCounter');
 moveCounter.textContent = `Siirrot: ${moves}`;
 
-function countInversions(arr) {
-    let inversions = 0;
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = i + 1; j < arr.length; j++) {
-            if (arr[i] && arr[j] && arr[i] > arr[j]) {
-                inversions++;
-            }
-        }
-    }
-    return inversions;
-}
-
-function isPuzzleSolvable() {
-    let flattenedPuzzle = puzzle.flat();
-    let inversions = countInversions(flattenedPuzzle);
-    if ((emptyPos.y % 2 === 0 && inversions % 2 === 0) || (emptyPos.y % 2 !== 0 && inversions % 2 !== 0)) {
-        return true;
-    }
-    return false;
-}
-
 function initAndShufflePuzzle() {
     const numbers = [...Array(gridSize * gridSize).keys()].slice(1); // Generate numbers 1 to gridSize^2
-    if (!isPuzzleSolvable()) {
-        console.log("Sekoitus uudelleen..");
-        initAndShufflePuzzle(images);
-        return;
-    }
-
     shuffle(numbers);
 
     for (let i = 0; i < gridSize; i++) {
@@ -162,7 +135,7 @@ function isPuzzleSolved() {
             }
         }
     }
-    return false;
+    return true;
 }
 
 function startTimer() {
@@ -189,10 +162,5 @@ canvas.addEventListener('click', handleClick);
 const solveButton = document.getElementById('solveButton');
 solveButton.addEventListener('click', solvePuzzle);
 
-const randomFolder = folderNames[Math.floor(Math.random() * folderNames.length)];
-
-loadImagesFromFolder(randomFolder)
-    .then(imagePaths => {
-        initAndShufflePuzzle(imagePaths);
-        drawPuzzle();
-    });
+initAndShufflePuzzle();
+drawPuzzle();
