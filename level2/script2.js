@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 4; 
+const gridSize = 4;
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['fountain', 'katedraali'];
@@ -84,8 +84,8 @@ function drawPuzzle() {
                 const numberX = j * tileSize + tileSize / 2;
                 const numberY = i * tileSize + tileSize / 2;
                 const number = parseInt(img.src.slice(-6, -4));
-                const highlightSize = 22; 
-                ctx.fillStyle = 'rgba(255, 255, 255, 1)'; 
+                const highlightSize = 22;
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
                 ctx.fillRect(numberX - highlightSize / 2, numberY - highlightSize / 2, highlightSize, highlightSize);
                 ctx.fillStyle = 'black';
                 ctx.font = 'bold 20px Arial';
@@ -107,6 +107,9 @@ function handleClick(event) {
         startTimer();
     }
     moves++;
+
+    document.getElementById('moveCounter').textContent = `Siirrot: ${moves}`;
+
 
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -134,7 +137,7 @@ function isPuzzleSolved() {
     let count = 1;
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            if (puzzle[i][j] !== null && !puzzle[i][j].endsWith(`${String(count).padStart(2, '0')}.png`)) {
+            if (puzzle[i][j] !== null && !puzzle[i][j].src.endsWith(`${String(count).padStart(2, '0')}.png`)) {
                 return false;
             }
             count++;
@@ -174,3 +177,6 @@ loadImagesFromFolder(randomFolder)
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
 });
+
+
+document.getElementById('movesDisplay').textContent = `Siirrot: ${moves}`;

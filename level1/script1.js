@@ -54,7 +54,7 @@ function isPuzzleSolvable() {
 
 function initAndShufflePuzzle(images) {
     if (!isPuzzleSolvable()) {
-        console.log("Unsolvable puzzle layout. Reshuffling...");
+        console.log("Sekoitus uudelleen..");
         initAndShufflePuzzle(images); 
         return;
     }
@@ -76,6 +76,7 @@ function initAndShufflePuzzle(images) {
     }
 
     shufflePuzzle();
+    resetMoveCounter();
 }
 
 function shuffle(array) {
@@ -123,9 +124,11 @@ function drawPuzzle() {
         }
     }
 }
+
 function solvePuzzle() {
     drawPuzzle();
     alert("Taso läpi!");
+    resetMoveCounter();
 }
 
 function handleClick(event) {
@@ -133,6 +136,8 @@ function handleClick(event) {
         startTimer();
     }
     moves++;
+
+    updateMoveCounter();
 
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -152,6 +157,7 @@ function handleClick(event) {
         if (isPuzzleSolved()) {
             stopTimer();
             alert("Onnittelut, voitit tason!");
+            resetMoveCounter();
         }
     }
 }
@@ -189,7 +195,16 @@ function stopTimer() {
 function resetTimer() {
     stopTimer();
     secondsElapsed = 0;
-document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
+    document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
+}
+
+function updateMoveCounter() {
+    document.getElementById('moveCounter').textContent = `Siirrot: ${moves}`;
+}
+
+function resetMoveCounter() {
+    moves = 0;
+    updateMoveCounter();
 }
 
 canvas.addEventListener('click', handleClick);
@@ -203,4 +218,4 @@ loadImagesFromFolder(randomFolder)
     .then(imagePaths => {
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
-});
+    });

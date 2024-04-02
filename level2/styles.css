@@ -25,3 +25,14 @@ canvas {
     text-align: center; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
+#moveCounter {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
