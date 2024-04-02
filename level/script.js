@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 3; 
+const gridSize = 3;
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['numerot'];
@@ -10,7 +10,7 @@ let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
 let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
-
+let levelCompleteMenuShown = false;
 
 let moveCounter = document.getElementById('moveCounter');
 moveCounter.textContent = `Siirrot: ${moves}`;
@@ -59,7 +59,7 @@ function isPuzzleSolvable() {
 function initAndShufflePuzzle(images) {
     if (!isPuzzleSolvable()) {
         console.log("Sekoitus uudelleen..");
-        initAndShufflePuzzle(images); 
+        initAndShufflePuzzle(images);
         return;
     }
 
@@ -119,7 +119,27 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Taso läpi!");
+
+    if (isPuzzleSolved()) {
+        stopTimer();
+        if (!levelCompleteMenuShown) {
+            showLevelCompleteMenu();
+            levelCompleteMenuShown = true;
+        }
+    }
+}
+
+function showLevelCompleteMenu() {
+    const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+    levelCompleteMenu.style.display = 'block';
+}
+
+function restartLevel() {
+    document.location.reload();
+}
+
+function nextLevel() {
+    window.location.href = '../level1/level1.html'; 
 }
 
 function handleClick(event) {
@@ -147,7 +167,7 @@ function handleClick(event) {
 
         if (isPuzzleSolved()) {
             stopTimer();
-            alert("Onnittelut, voitit tason!");
+            solvePuzzle();
         }
     }
 }
@@ -166,7 +186,7 @@ function isPuzzleSolved() {
             }
         }
     }
-    return false; 
+    return false;
 }
 
 function startTimer() {
@@ -199,4 +219,4 @@ loadImagesFromFolder(randomFolder)
     .then(imagePaths => {
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
-});
+    });

@@ -12,6 +12,16 @@
     <button id="solveButton">Solve Puzzle</button>
     <div id="timerDisplay">Aika: 0 sekuntia</div>
     <div id="moveCounter">Siirrot: 0</div>
+
+    <div id="levelCompleteMenu" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Onnittelut, voitit tason!</h2>
+            <button onclick="restartLevel()">Aloita uudelleen</button>
+            <button onclick="nextLevel()">Siirry seuraavaan tasoon</button>
+        </div>
+    </div>
+    
+
     <script src="script2.js"></script>
 </body>
 </html>

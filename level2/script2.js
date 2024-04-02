@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 4;
+const gridSize = 4; // Vaihdetaan gridin koko 4:ksi
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['fountain', 'katedraali'];
@@ -10,6 +10,10 @@ let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
 let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
+let levelCompleteMenuShown = false;
+
+let moveCounter = document.getElementById('moveCounter');
+moveCounter.textContent = `Siirrot: ${moves}`;
 
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
@@ -49,6 +53,7 @@ function initAndShufflePuzzle(images) {
     }
 
     shufflePuzzle();
+    resetMoveCounter();
 }
 
 function shuffle(array) {
@@ -84,8 +89,8 @@ function drawPuzzle() {
                 const numberX = j * tileSize + tileSize / 2;
                 const numberY = i * tileSize + tileSize / 2;
                 const number = parseInt(img.src.slice(-6, -4));
-                const highlightSize = 22;
-                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+                const highlightSize = 22; 
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)'; 
                 ctx.fillRect(numberX - highlightSize / 2, numberY - highlightSize / 2, highlightSize, highlightSize);
                 ctx.fillStyle = 'black';
                 ctx.font = 'bold 20px Arial';
@@ -99,7 +104,29 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Taso läpi!");
+    if (!levelCompleteMenuShown && isPuzzleSolved()) {
+        stopTimer();
+        showLevelCompleteMenu();
+        levelCompleteMenuShown = true;
+    }
+}
+
+function showLevelCompleteMenu() {
+    const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+    levelCompleteMenu.style.display = 'block';
+}
+
+function closeModal() {
+    const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+    levelCompleteMenu.style.display = 'none';
+}
+
+function restartLevel() {
+    document.location.reload();
+}
+
+function nextLevel() {
+    window.location.href = '../level2/level2.html'; 
 }
 
 function handleClick(event) {
@@ -107,9 +134,7 @@ function handleClick(event) {
         startTimer();
     }
     moves++;
-
-    document.getElementById('moveCounter').textContent = `Siirrot: ${moves}`;
-
+    updateMoveCounter();
 
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -125,11 +150,7 @@ function handleClick(event) {
         emptyPos.y = clickedTileY;
 
         drawPuzzle();
-
-        if (isPuzzleSolved()) {
-            stopTimer();
-            alert("Onnittelut, voitit pelin!");
-        }
+        solvePuzzle();
     }
 }
 
@@ -137,13 +158,17 @@ function isPuzzleSolved() {
     let count = 1;
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            if (puzzle[i][j] !== null && !puzzle[i][j].src.endsWith(`${String(count).padStart(2, '0')}.png`)) {
+            if (count === gridSize * gridSize) {
+                return true;
+            }
+            if (puzzle[i][j] !== null && puzzle[i][j].src.endsWith(`${String(count).padStart(2, '0')}.png`)) {
+                count++;
+            } else {
                 return false;
             }
-            count++;
         }
     }
-    return true;
+    return false;
 }
 
 function startTimer() {
@@ -165,6 +190,15 @@ function resetTimer() {
     document.getElementById('timerDisplay').textContent = `Aika: 0 sekuntia`;
 }
 
+function updateMoveCounter() {
+    moveCounter.textContent = `Siirrot: ${moves}`;
+}
+
+function resetMoveCounter() {
+    moves = 0;
+    updateMoveCounter();
+}
+
 canvas.addEventListener('click', handleClick);
 
 const solveButton = document.getElementById('solveButton');
@@ -176,7 +210,4 @@ loadImagesFromFolder(randomFolder)
     .then(imagePaths => {
         initAndShufflePuzzle(imagePaths);
         drawPuzzle();
-});
-
-
-document.getElementById('movesDisplay').textContent = `Siirrot: ${moves}`;
+    });

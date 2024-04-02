@@ -1,6 +1,6 @@
 const canvas = document.getElementById('puzzleCanvas');
 const ctx = canvas.getContext('2d');
-const gridSize = 3; 
+const gridSize = 3;
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
 const folderNames = ['auto', 'opel'];
@@ -10,6 +10,10 @@ let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
 let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
+let levelCompleteMenuShown = false;
+
+let moveCounter = document.getElementById('moveCounter');
+moveCounter.textContent = `Siirrot: ${moves}`;
 
 function preloadImages(imagePaths) {
     return Promise.all(imagePaths.map((path) => {
@@ -55,7 +59,7 @@ function isPuzzleSolvable() {
 function initAndShufflePuzzle(images) {
     if (!isPuzzleSolvable()) {
         console.log("Sekoitus uudelleen..");
-        initAndShufflePuzzle(images); 
+        initAndShufflePuzzle(images);
         return;
     }
 
@@ -127,8 +131,29 @@ function drawPuzzle() {
 
 function solvePuzzle() {
     drawPuzzle();
-    alert("Taso läpi!");
-    resetMoveCounter();
+    if (!levelCompleteMenuShown && isPuzzleSolved()) {
+        stopTimer();
+        showLevelCompleteMenu();
+        levelCompleteMenuShown = true;
+    }
+}
+
+function showLevelCompleteMenu() {
+    const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+    levelCompleteMenu.style.display = 'block';
+}
+
+function closeModal() {
+    const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+    levelCompleteMenu.style.display = 'none';
+}
+
+function restartLevel() {
+    document.location.reload();
+}
+
+function nextLevel() {
+    window.location.href = '../level2/level2.html'; 
 }
 
 function handleClick(event) {
@@ -136,7 +161,6 @@ function handleClick(event) {
         startTimer();
     }
     moves++;
-
     updateMoveCounter();
 
     const rect = canvas.getBoundingClientRect();
@@ -153,12 +177,7 @@ function handleClick(event) {
         emptyPos.y = clickedTileY;
 
         drawPuzzle();
-
-        if (isPuzzleSolved()) {
-            stopTimer();
-            alert("Onnittelut, voitit tason!");
-            resetMoveCounter();
-        }
+        solvePuzzle();
     }
 }
 
@@ -176,7 +195,7 @@ function isPuzzleSolved() {
             }
         }
     }
-    return false; 
+    return false;
 }
 
 function startTimer() {
@@ -199,7 +218,7 @@ function resetTimer() {
 }
 
 function updateMoveCounter() {
-    document.getElementById('moveCounter').textContent = `Siirrot: ${moves}`;
+    moveCounter.textContent = `Siirrot: ${moves}`;
 }
 
 function resetMoveCounter() {

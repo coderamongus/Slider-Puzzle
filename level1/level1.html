@@ -10,8 +10,17 @@
     <button onclick="window.location.href='../index.html'">Takaisin</button>
     <canvas id="puzzleCanvas" width="500" height="500"></canvas>
     <button id="solveButton">Solve Puzzle</button>
-    <script src="script1.js"></script>
+
     <div id="timerDisplay">Aika: 0 sekuntia</div>
     <div id="moveCounter">Siirrot: 0</div>
+
+    <div id="levelCompleteMenu" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Onnittelut, voitit tason!</h2>
+            <button onclick="restartLevel()">Aloita uudelleen</button>
+            <button onclick="nextLevel()">Siirry seuraavaan tasoon</button>
+        </div>
+    </div>
+    <script src="script1.js"></script>    
 </body>
 </html>

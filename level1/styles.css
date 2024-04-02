@@ -36,3 +36,46 @@ canvas {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 80%;
+    position: fixed; /* Vaihdettu relative -> fixed */
+    top: 50%; /* Keskitetään pystysuunnassa ruudun keskelle */
+    left: 50%; /* Keskitetään vaakasuunnassa ruudun keskelle */
+    transform: translate(-50%, -50%); /* Siirretään modaaliruutua takaisin puoliväliin */
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute; /* muutettu */
+    top: 10px; /* sijoitetaan hieman ylös */
+    right: 10px; /* sijoitetaan hieman oikealle */
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
