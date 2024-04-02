@@ -235,8 +235,6 @@ function resetMoveCounter() {
 
 canvas.addEventListener('click', handleClick);
 
-const solveButton = document.getElementById('solveButton');
-solveButton.addEventListener('click', solvePuzzle);
 
 const randomFolder = folderNames[Math.floor(Math.random() * folderNames.length)];
 
