@@ -3,7 +3,6 @@ const ctx = canvas.getContext('2d');
 const gridSize = 3; 
 const tileSize = canvas.width / gridSize;
 const shuffleCount = 1000;
-const folderNames = ['numerot'];
 
 let puzzle = [];
 let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
@@ -11,35 +10,14 @@ let moves = 0;
 let timerInterval;
 let secondsElapsed = 0;
 
-
 let moveCounter = document.getElementById('moveCounter');
 moveCounter.textContent = `Siirrot: ${moves}`;
-
-function preloadImages(imagePaths) {
-    return Promise.all(imagePaths.map((path) => {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.onerror = reject;
-            img.src = path;
-        });
-    }));
-}
-
-function loadImagesFromFolder(folder) {
-    const imagePaths = [];
-
-    for (let i = 1; i <= gridSize * gridSize; i++) {
-        imagePaths.push(`${folder}/${String(i).padStart(2, '0')}.png`);
-    }
-    return preloadImages(imagePaths);
-}
 
 function countInversions(arr) {
     let inversions = 0;
     for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < arr.length; j++) {
-            if (arr[i] && arr[j] && parseInt(arr[i].src.slice(-6, -4)) > parseInt(arr[j].src.slice(-6, -4))) {
+            if (arr[i] && arr[j] && arr[i] > arr[j]) {
                 inversions++;
             }
         }
@@ -48,7 +26,7 @@ function countInversions(arr) {
 }
 
 function isPuzzleSolvable() {
-    let flattenedPuzzle = puzzle.flat().map(img => img ? parseInt(img.src.slice(-6, -4)) : null);
+    let flattenedPuzzle = puzzle.flat();
     let inversions = countInversions(flattenedPuzzle);
     if ((emptyPos.y % 2 === 0 && inversions % 2 === 0) || (emptyPos.y % 2 !== 0 && inversions % 2 !== 0)) {
         return true;
@@ -56,21 +34,21 @@ function isPuzzleSolvable() {
     return false;
 }
 
-function initAndShufflePuzzle(images) {
+function initAndShufflePuzzle() {
+    const numbers = [...Array(gridSize * gridSize).keys()].slice(1); // Generate numbers 1 to gridSize^2
     if (!isPuzzleSolvable()) {
         console.log("Sekoitus uudelleen..");
-        initAndShufflePuzzle(images); 
+        initAndShufflePuzzle(); 
         return;
     }
 
-    const nonEmptyImages = images.slice(0, -1);
-    shuffle(nonEmptyImages);
+    shuffle(numbers);
 
     for (let i = 0; i < gridSize; i++) {
         puzzle[i] = [];
         for (let j = 0; j < gridSize; j++) {
             if (i !== gridSize - 1 || j !== gridSize - 1) {
-                puzzle[i][j] = nonEmptyImages.pop();
+                puzzle[i][j] = numbers.pop();
             } else {
                 puzzle[i][j] = null;
                 emptyPos.x = j;
@@ -107,11 +85,14 @@ function shufflePuzzle() {
 
 function drawPuzzle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "bold " + (tileSize / 2) + "px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            const img = puzzle[i][j];
-            if (img !== null) {
-                ctx.drawImage(img, j * tileSize, i * tileSize, tileSize, tileSize);
+            const num = puzzle[i][j];
+            if (num !== null) {
+                ctx.fillText(num, j * tileSize + tileSize / 2, i * tileSize + tileSize / 2);
             }
         }
     }
@@ -153,20 +134,14 @@ function handleClick(event) {
 }
 
 function isPuzzleSolved() {
-    let count = 1;
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
-            if (count === gridSize * gridSize) {
-                return true;
-            }
-            if (puzzle[i][j] !== null && puzzle[i][j].src.endsWith(`${String(count).padStart(2, '0')}.png`)) {
-                count++;
-            } else {
+            if (puzzle[i][j] !== null && puzzle[i][j] !== i * gridSize + j + 1) {
                 return false;
             }
         }
     }
-    return false; 
+    return true;
 }
 
 function startTimer() {
@@ -193,10 +168,5 @@ canvas.addEventListener('click', handleClick);
 const solveButton = document.getElementById('solveButton');
 solveButton.addEventListener('click', solvePuzzle);
 
-const randomFolder = folderNames[Math.floor(Math.random() * folderNames.length)];
-
-loadImagesFromFolder(randomFolder)
-    .then(imagePaths => {
-        initAndShufflePuzzle(imagePaths);
-        drawPuzzle();
-});
+initAndShufflePuzzle();
+drawPuzzle();
