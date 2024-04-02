@@ -1,41 +1,42 @@
 body {
     display: flex;
-    background-color: #b9b9b9;
+    background-color: #ffffff;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     height: 100vh;
     margin: 0;
+    animation: backgroundAnimation 20s ease infinite;
+}
+
+@keyframes backgroundAnimation {
+    0% { background-color: #6a948e; }
+    50% { background-color: #93c4c1; }
+    100% { background-color: #6c9396; }
 }
 
 canvas {
-    border: 2px solid black;
-    background-color: #ffffff;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: #dddbdb;
 }
+
 #puzzleCanvas {
     margin-bottom: 20px; 
 }
-#timerDisplay {
+
+#timerDisplay,
+#moveCounter {
     font-family: Arial, sans-serif;
     font-size: 20px;
     color: #333; 
-    background-color: #f4f4f4; 
+    background-color: #5bcfdf; 
     padding: 10px 20px; 
     border-radius: 5px; 
     text-align: center; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-}
-#moveCounter {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    color: #333;
-    background-color: #f4f4f4;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -56,21 +57,20 @@ canvas {
     padding: 20px;
     border: 1px solid #888;
     max-width: 80%;
-    position: fixed; /* Vaihdettu relative -> fixed */
-    top: 50%; /* Keskitetään pystysuunnassa ruudun keskelle */
-    left: 50%; /* Keskitetään vaakasuunnassa ruudun keskelle */
-    transform: translate(-50%, -50%); /* Siirretään modaaliruutua takaisin puoliväliin */
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
 }
-
 
 .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-    position: absolute; /* muutettu */
-    top: 10px; /* sijoitetaan hieman ylös */
-    right: 10px; /* sijoitetaan hieman oikealle */
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
 }
 
 .close:hover,

@@ -2,44 +2,60 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #b9b9b9;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #06618f, #06618f, #94cbe7, #94cbe7);
+    background-size: 400% 400%;
+    animation: gradientBackground 15s ease infinite;
 }
 
 .container {
     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: #333;
+    color: #000000;
     margin-bottom: 20px;
 }
 
-button {
-    background-color: #333;
-    color: white;
-    border: none;
+.level-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.level-button {
+    background-color: #99dee7;
+    color: #000000;
+    border: 2px solid #001488;
     padding: 10px 20px;
     margin: 10px 0; 
-    display: block; 
     width: 200px; 
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-button:hover {
-    background-color: #555;
-    transform: scale(1.05);
+.level-button:hover {
+    background-color: #66cfcf;
+    color: #f2f2f2;
 }
 
-button:active {
-    background-color: #777;
+.level-button:active {
+    background-color: #ffffff;
+}
+
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
