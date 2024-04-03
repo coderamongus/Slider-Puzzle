@@ -11,13 +11,14 @@ body {
 
 @keyframes backgroundAnimation {
     0% { background-color: #6a948e; }
-    50% { background-color: #93c4c1; }
-    100% { background-color: #6c9396; }
+    50% { background-color: #628684; }
+    100% { background-color: #65898b; }
 }
 
 canvas {
     border: 2px solid rgb(0, 0, 0);
     background-color: #dddbdb;
+    
 }
 
 #puzzleCanvas {
