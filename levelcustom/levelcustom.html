@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button onclick="window.location.href='../index.html'">Takaisin</button>
+    <button class="backButton" onclick="window.location.href='../index.html'">Takaisin</button>
     <div>
         <label for="puzzleSizeInput">Puzzle Size:</label>
         <input type="number" id="puzzleSizeInput" min="2" max="10" value="3">
         <button id="startButton">Start</button>
     </div>
     <canvas id="puzzleCanvas" width="500" height="500"></canvas>
-    <button id="solveButton">Solve Puzzle</button>
+
     <script src="scriptcustom.js"></script>
     <div id="timerDisplay">Aika: 0 sekuntia</div>
 </body>

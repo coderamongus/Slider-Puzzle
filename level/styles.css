@@ -80,3 +80,18 @@ canvas {
     text-decoration: none;
     cursor: pointer;
 }
+.backButton {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #fff;
+    background-color: #5bcfdf; 
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+    background-color: #b5f6ff; 
+}
