@@ -119,9 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
     }
 
-    const solveButton = document.getElementById('solveButton');
-    solveButton.addEventListener('click', solvePuzzle);
-
     function solvePuzzle() {
         drawPuzzle();
         alert("Puzzle solved!");
@@ -153,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function () {
             initializePuzzle(size);
             drawPuzzle();
             startTimer();
-            solveButton.disabled = false;
         } else {
             alert("Virheellinen pelin koko. Ole hyvä ja syötä numero väliltä 2 ja 10.");
         }
