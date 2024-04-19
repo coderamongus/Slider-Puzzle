@@ -8,14 +8,19 @@ document.addEventListener("DOMContentLoaded", function () {
     let puzzle = [];
     let emptyPos = { x: gridSize - 1, y: gridSize - 1 };
     let moves = 0;
-    let timerInterval;
-    let secondsElapsed = 0;
+    let timerInterval; 
+
+    let moveCounter; 
 
     function initializePuzzle(size) {
         gridSize = size;
         tileSize = canvas.width / gridSize;
         loadNumbers();
         resetTimer(); 
+
+
+        moveCounter = document.getElementById('moveCounter');
+        moveCounter.textContent = `Siirrot: ${moves}`;
     }
 
     function loadNumbers() {
@@ -96,6 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 stopTimer();
                 showLevelCompleteMenu();
             }
+
+
+            moves++;
+            moveCounter.textContent = `Moves: ${moves}`;
         }
     }
 
