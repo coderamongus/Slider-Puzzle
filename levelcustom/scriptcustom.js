@@ -31,23 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
         emptyPos.y = gridSize - 1;
         shufflePuzzle();
     }
-
+    
     function shufflePuzzle() {
         const getRandomInt = (max) => {
             const randomValues = new Uint32Array(1);
             window.crypto.getRandomValues(randomValues);
             return randomValues[0] % max;
         };
-    
-        for (let i = 0; i < gridSize; i++) {
-            puzzle[i] = [];
-            for (let j = 0; j < gridSize; j++) {
-                puzzle[i][j] = i * gridSize + j + 1;
-            }
-        }
-        puzzle[gridSize - 1][gridSize - 1] = null;
-        emptyPos.x = gridSize - 1;
-        emptyPos.y = gridSize - 1;
     
         for (let i = gridSize * gridSize - 1; i > 0; i--) {
             const j = Math.floor(getRandomInt(i + 1));
@@ -59,9 +49,17 @@ document.addEventListener("DOMContentLoaded", function () {
             puzzle[x1][y1] = puzzle[x2][y2];
             puzzle[x2][y2] = temp;
         }
+    
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                if (puzzle[i][j] === null) {
+                    emptyPos.x = j;
+                    emptyPos.y = i;
+                    return;
+                }
+            }
+        }
     }
-    
-    
 
     function drawPuzzle() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -96,32 +94,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (isPuzzleSolved()) {
                 stopTimer();
-                alert("Onnittelut, voitit tason!");
+                showLevelCompleteMenu();
             }
         }
     }
-
-    canvas.addEventListener('click', handleCanvasClick);
 
     function isPuzzleSolved() {
         let count = 1;
         for (let i = 0; i < gridSize; i++) {
             for (let j = 0; j < gridSize; j++) {
-                if (count === gridSize * gridSize) {
-                    return true;
+                if (puzzle[i][j] !== null) {
+                    if (puzzle[i][j] !== count) {
+                        return false;
+                    }
+                    count++;
+                } else {
+                    if (i !== gridSize - 1 || j !== gridSize - 1) {
+                        return false; 
+                    }
                 }
-                if (puzzle[i][j] !== null && puzzle[i][j] !== count) {
-                    return false;
-                }
-                count++;
             }
         }
-        return false;
+        return true; 
     }
 
     function solvePuzzle() {
         drawPuzzle();
-        alert("Puzzle solved!");
+        showLevelCompleteMenu();
     }
 
     function startTimer() {
@@ -143,6 +142,18 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('timerDisplay').textContent = `Time: 0 seconds`;
     }
 
+    function showLevelCompleteMenu() {
+        const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+        levelCompleteMenu.style.display = 'block';
+        const closeButton = levelCompleteMenu.querySelector('.closeButton');
+        closeButton.addEventListener('click', closeModal);
+    }
+
+    function closeModal() {
+        const levelCompleteMenu = document.getElementById('levelCompleteMenu');
+        levelCompleteMenu.style.display = 'none';
+    }
+
     document.getElementById('startButton').addEventListener('click', function () {
         const puzzleSizeInput = document.getElementById('puzzleSizeInput');
         const size = parseInt(puzzleSizeInput.value);
@@ -151,7 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
             drawPuzzle();
             startTimer();
         } else {
-            alert("Virheellinen pelin koko. Ole hyvä ja syötä numero väliltä 2 ja 10.");
+            alert("Invalid puzzle size. Please enter a number between 2 and 10.");
         }
     });
+
+    canvas.addEventListener('click', handleCanvasClick);
 });

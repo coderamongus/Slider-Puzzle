@@ -20,6 +20,39 @@ canvas {
     background-color: #dddbdb;
     
 }
+#startButton {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: #333; 
+    background-color: #5bcfdf; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    text-align: center; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+}
+#puzzleSizeLabel {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #fff;
+    background-color: #5bcfdf; 
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;;
+}
+p{
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: #333; 
+    background-color: #5bcfdf; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    text-align: center; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+}
 
 #puzzleCanvas {
     margin-bottom: 20px; 

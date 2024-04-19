@@ -8,11 +8,18 @@
 </head>
 <body>
     <button class="backButton" onclick="window.location.href='../index.html'">Takaisin</button>
-    <div>
-        <label for="puzzleSizeInput">Puzzle Size:</label>
+    <div style="display: flexbox;">
+        <p>Puzzle Size:</p>
         <input type="number" id="puzzleSizeInput" min="2" max="10" value="3">
         <button id="startButton">Start</button>
     </div>
+    <div id="levelCompleteMenu" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Onnittelut, voitit tason!</h2>
+            <button class="closeButton">Sulje ilmoitus</button>
+        </div>
+    </div>
+    
     <canvas id="puzzleCanvas" width="500" height="500"></canvas>
 
     <script src="scriptcustom.js"></script>
